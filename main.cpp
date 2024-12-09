@@ -3,7 +3,6 @@
 #include <fstream>
 #include <sstream>
 #include <ctime>
-//#include <chrono>
 
 using namespace std;
 
@@ -40,7 +39,7 @@ array<float,2> get_time_diff(int sleep_hour,int sleep_min,int wake_hour,int wake
     return return_list;
 }
 
-int main(){
+int main(int argc, char * argv[]){
     int sleep[2];
     int wake[2];
     cout << "When did you go to sleep?\n";
@@ -69,14 +68,21 @@ int main(){
     char buffer[11];
     strftime(buffer, sizeof(buffer), "%Y-%m-%d", timeinfo);
 
-    ofstream file("sleep_data.txt",ios_base::app);
+    string pwd = argv[0];
+    pwd = pwd.substr(0,pwd.length()-14);
+    string file_path = pwd + "/sleep_data.txt";
+
+    ofstream file(file_path,ios_base::app);
     stringstream text_out;
 
     text_out << buffer << "," << slept_time[0] << "," << slept_time[1];
     file << text_out.str() << endl;
     file.close();
 
-    cout << "Added night to sleep_data.txt" << endl;
+    stringstream confirmation_message;
+    confirmation_message << "Added data to " << file_path;
+
+    cout << confirmation_message.str() << endl;
 
     return 0;
-};
+}
